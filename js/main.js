@@ -23,6 +23,11 @@ const cardsMenu = document.querySelector('.cards-menu')
 let login = localStorage.getItem('Delivery');
 
 
+const valid = function (str){
+  const nameReg = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/
+  return nameReg.test(str)
+}
+
 function toggleModal() {
   modal.classList.toggle("is-open");
 }
@@ -52,7 +57,7 @@ function notAutorized (){
   function logIn(event){
     event.preventDefault();
     
-    if (loginInput.value ){
+    if (valid(loginInput.value)){
 
       login = loginInput.value
       localStorage.setItem('Delivery', login)
@@ -142,14 +147,19 @@ function openGoods(event){
   const restaurant = target.closest('.card-restaurant');
   console.log(restaurant);
   if (restaurant) {
-    cardsMenu.textContent = ""
-    containerPromo.classList.add('hide')
-    restaurants.classList.add('hide')
-    menu.classList.remove('hide')
-    
-    createCardGood()
-    createCardGood()
-    createCardGood()
+    if (login){
+      
+      cardsMenu.textContent = ""
+      containerPromo.classList.add('hide')
+      restaurants.classList.add('hide')
+      menu.classList.remove('hide')
+      
+      createCardGood()
+      createCardGood()
+      createCardGood()
+    } else {
+      toggleModalAuth()
+    }
   }
 
   
@@ -169,3 +179,10 @@ logo.addEventListener('click', () => {
 checkAuth()
 createCardRestaurant()
 createCardRestaurant()
+
+new Swiper('.swiper-container',{
+  loop: true,
+  autoplay: {
+    delay: 5000
+  },
+})
